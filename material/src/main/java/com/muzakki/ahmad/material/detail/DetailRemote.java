@@ -30,7 +30,7 @@ public abstract class DetailRemote extends Detail {
         this.fields = fields;
         ic = new InternetConnection(ctx) {
             @Override
-            protected void OnSuccess(JSONObject result) {
+            protected void onSuccess(JSONObject result) {
                 parseData(Helper.getJSONData(result));
             }
         };

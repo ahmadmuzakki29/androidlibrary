@@ -26,7 +26,7 @@ public class GridInternetConnection extends InternetConnection {
     }
 
     @Override
-    protected void OnSuccess(JSONObject result) {
+    protected void onSuccess(JSONObject result) {
         grid.parseData(Helper.getJSONData(result));
     }
 

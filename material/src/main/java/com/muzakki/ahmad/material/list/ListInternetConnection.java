@@ -28,7 +28,7 @@ public class ListInternetConnection extends InternetConnection {
     }
 
     @Override
-    protected void OnSuccess(JSONObject result) {
+    protected void onSuccess(JSONObject result) {
         list.parseData(Helper.getJSONData(result));
     }
 
