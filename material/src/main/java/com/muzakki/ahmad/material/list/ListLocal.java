@@ -14,10 +14,10 @@ import java.util.ArrayList;
 /**
  * Created by jeki on 6/3/16.
  */
-public abstract class ListLocal extends List{
+public abstract class ListLocal extends List {
     private final Activity act;
     private final ListInternetConnection ic;
-    private final Listener listener;
+    protected final Listener listener;
 
     private ListModel model;
 
@@ -31,7 +31,7 @@ public abstract class ListLocal extends List{
     public void render(){
         getEmptyView().setVisibility(GONE);
         hideInfo();
-        if(model==null) model  = getListModel();
+        model  = getListModel();
         ArrayList<Bundle> data = model.getData();
         if(!data.isEmpty()) {
             setListData(data);
@@ -50,7 +50,7 @@ public abstract class ListLocal extends List{
         return new ListInternetConnection(act,list);
     }
 
-    private void fetchData(){
+    protected void fetchData(){
         listener.setLoading(true);
         String url = getUrl();
         Bundle param = getParam();
@@ -72,7 +72,8 @@ public abstract class ListLocal extends List{
     }
 
     protected ListModel getListModel(){
-        return new ListModel(act,getTableName());
+        if(model==null) model = new ListModel(act,getTableName());
+        return model;
     }
 
     protected String getTableName(){

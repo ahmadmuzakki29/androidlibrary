@@ -27,7 +27,7 @@ public abstract class GridRemote extends Grid implements InteractiveScrollView.O
     private boolean render = false;
     private boolean loadingState,bottom = false;
 
-    public GridRemote(GridActivity act,Listener listener) {
+    public GridRemote(GridActivity act, Listener listener) {
         super(act,listener);
         this.act = act;
         ic = new GridInternetConnection(act,this);
@@ -117,7 +117,7 @@ public abstract class GridRemote extends Grid implements InteractiveScrollView.O
             ArrayList<Bundle> newData = new ArrayList<>();
             for (int i = 0; i < result.length(); i++) {
                 JSONObject obj = result.getJSONObject(i);
-                newData.add(Helper.JSONtoBundle(obj));
+                newData.add(Helper.jsonToBundle(obj));
             }
             drawItem(newData);
             data.addAll(newData);

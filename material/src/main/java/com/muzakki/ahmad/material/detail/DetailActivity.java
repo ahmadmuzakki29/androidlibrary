@@ -19,9 +19,6 @@ import com.muzakki.ahmad.material.R;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 
 /**
  * Created by jeki on 6/9/16.
@@ -31,12 +28,12 @@ public abstract class DetailActivity extends AppCompatActivity
     private boolean isHideToolbarView = false;
     protected final int START_ACTIVITY_EDIT = 1;
 
-    @Bind(R.id.app_bar_layout) AppBarLayout appBarLayout;
-    @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.toolbar_header_view)HeaderView toolbarHeaderView;
-    @Bind(R.id.float_header_view)HeaderView floatHeaderView;
-    @Bind(R.id.image)ImageView image;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Toolbar toolbar;
+    private HeaderView toolbarHeaderView;
+    private HeaderView floatHeaderView;
+    private ImageView image;
     private Detail detail;
 
     @Override
@@ -44,7 +41,12 @@ public abstract class DetailActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_detail);
 
-        ButterKnife.bind(this);
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarHeaderView = (HeaderView) findViewById(R.id.toolbar_header_view);
+        floatHeaderView = (HeaderView) findViewById(R.id.float_header_view);
+        image = (ImageView) findViewById(R.id.image);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -99,9 +101,9 @@ public abstract class DetailActivity extends AppCompatActivity
 
         if (id == android.R.id.home) {
             finish();
-        }else if(id==R.id.menu_edit){
+        }else if(id== R.id.menu_edit){
             onMenuEdit();
-        }else if(id==R.id.menu_delete){
+        }else if(id== R.id.menu_delete){
             onMenuDelete();
         }
 

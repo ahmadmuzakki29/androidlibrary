@@ -14,7 +14,11 @@ import java.util.ArrayList;
  */
 public class Database extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "material.db";
+    public static final String DATABASE_NAME = "database.db"; // change this
+    private static final String[] TABLES = new String[]{
+            /*"create table if not exists notification(id text primary key," +
+                    "title text, description text,time text)"*/
+    };
 
     public Database(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,12 +26,15 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+        for(String tb: TABLES){
+            sqLiteDatabase.execSQL(tb);
+        }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        /*sqLiteDatabase.execSQL("drop table notification");
+        sqLiteDatabase.execSQL(TABLES[0]);*/
     }
 
     @NonNull

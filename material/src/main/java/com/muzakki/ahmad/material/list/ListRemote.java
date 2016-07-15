@@ -100,7 +100,7 @@ public abstract class ListRemote extends List {
         try {
             for (int i = 0; i < result.length(); i++) {
                 JSONObject obj = result.getJSONObject(i);
-                data.add(Helper.JSONtoBundle(obj));
+                data.add(Helper.jsonToBundle(obj));
             }
         }catch(JSONException e){e.printStackTrace();}
 
@@ -196,7 +196,7 @@ public abstract class ListRemote extends List {
 
     // INTERNET CONNECTION
 
-    public static class ListInternetConnectionRender extends ListInternetConnection{
+    public static class ListInternetConnectionRender extends ListInternetConnection {
         private final ListRemote list;
 
         ListInternetConnectionRender(Activity act, List list){

@@ -54,7 +54,7 @@ public abstract class DetailRemote extends Detail {
     private void parseData(JSONArray result) {
         try {
             JSONObject obj = result.getJSONObject(0);
-            Bundle data = Helper.JSONtoBundle(obj);
+            Bundle data = Helper.jsonToBundle(obj);
             initComponent(fields,data);
         } catch (JSONException e) {
             e.printStackTrace();

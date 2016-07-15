@@ -10,15 +10,11 @@ import android.widget.TextView;
 
 import com.muzakki.ahmad.material.R;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class HeaderView extends LinearLayout{
 
-    @Bind(R.id.header_view_title)
     TextView title;
 
-    @Bind(R.id.header_view_sub_title)
     TextView subTitle;
 
 
@@ -32,6 +28,7 @@ public class HeaderView extends LinearLayout{
 
     public HeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -43,7 +40,8 @@ public class HeaderView extends LinearLayout{
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        ButterKnife.bind(this);
+        title = (TextView) findViewById(R.id.header_view_title);
+        subTitle = (TextView) findViewById(R.id.header_view_sub_title);
     }
 
     public void bindTo(String title) {

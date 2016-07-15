@@ -3,9 +3,9 @@ package com.muzakki.ahmad.material.form;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.muzakki.ahmad.lib.Constant;
 import com.muzakki.ahmad.lib.InternetConnection;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONObject;
 
 /**
@@ -44,11 +44,11 @@ public class FormInternetConnection extends InternetConnection {
     }
 
     protected String getInsertUrl(){
-        return Constant.URL_INSERT +  "/" + table;
+        throw new NotImplementedException("Insert Url not Implemented");
     }
 
     protected String getUpdateUrl(String id){
-        return Constant.URL_UPDATE +  "/" + table + "/" +id;
+        throw new NotImplementedException("Update Url not Implemented");
     }
 
     public void update(String id) {
@@ -57,7 +57,7 @@ public class FormInternetConnection extends InternetConnection {
     }
 
     protected String getDeleteUrl(String id){
-        return Constant.URL_DELETE+"/"+table+"/"+id;
+        throw new NotImplementedException("Delete Url not Implemented");
     }
 
     public void delete(String id){
