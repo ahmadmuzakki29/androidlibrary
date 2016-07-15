@@ -7,10 +7,10 @@ public class Constant {
 
     public static final int TIMEOUT = 30000;
     public static final String AUTH = "Authorization";
-    public static final String API_KEY = "Whvo1g5DjY0TS1AV9NuT";
-    static final String PREF = "com.muzakki.ahmad.notification";
+    public static final String API_KEY = "PUT YOUR API KEY HERE";
+    static final String PREF = "com.muzakki.ahmad.samples";
 
-    public static final String HOST = "https://api-dot-hip-host-800.appspot.com";
+    public static final String HOST = "PUT YOUR HOST HERE";
 
     public static final String URL_LOGIN = HOST+"/device/login";
 
