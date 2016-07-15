@@ -35,19 +35,30 @@ import java.util.Map;
  */
 
 public class InternetConnection implements Handler.Callback{
-    public final String GET="GET";
-    public final String POST="POST";
+    public static final String GET="GET";
+    public static final String POST="POST";
+    public static final int MAX_DELAY = 60000;
     private final String MULTIPART = "multi";
     private final Context context;
-    private final long DELAY=3000;
+    private final long DELAY=2000;
     private final boolean persistent;
     private HashMap<String, String> headers;
     private int attempt=0;
-    private final int MAX_ATTEMPT=3;
+    private int maxAttempt=3;
     private Bundle data = new Bundle();
     private Thread thread;
     private HttpURLConnection httpConn;
     private MultiPartPost multiPartPost;
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    private boolean debug;
 
 
     public InternetConnection(boolean persistent){
@@ -76,12 +87,16 @@ public class InternetConnection implements Handler.Callback{
                 url += key+"="+value+"&";
             }
         }
-        Log.i("jeki", url);
+        if(isDebug()) Log.d("jeki", url);
         attempt=0;
         request(url, null, GET);
     }
 
     public void post(String url,Bundle params){
+        if(isDebug()){
+            Log.d("jeki", url);
+            Log.d("jeki",params.toString());
+        }
         request(url, params, POST);
     }
 
@@ -188,7 +203,7 @@ public class InternetConnection implements Handler.Callback{
                     onSuccess(obj);
                 }
             }else if(code==HttpURLConnection.HTTP_NOT_FOUND){
-                throw new NullPointerException();
+                throw new NullPointerException("NOT FOUND");
             }else{
                 onFailure();
             }
@@ -225,10 +240,10 @@ public class InternetConnection implements Handler.Callback{
         }
     }
 
-    protected void onFailure(){
+    private void onFailure(){
         attempt++;
         Log.i("jeki","attempt "+attempt);
-        if(attempt>=MAX_ATTEMPT && !persistent){
+        if(attempt>=maxAttempt && !persistent){
             if(context instanceof Activity){
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
@@ -240,7 +255,10 @@ public class InternetConnection implements Handler.Callback{
             return;
         }
         try{
-            Thread.sleep(DELAY);
+            //exponential backoff
+            long delay = DELAY * attempt;
+            if(delay>=MAX_DELAY) delay = MAX_DELAY;
+            Thread.sleep(delay);
             TryAgain();
         }catch (InterruptedException ex){ Log.i("jeki","another process going on");}
     }
@@ -264,7 +282,7 @@ public class InternetConnection implements Handler.Callback{
 
         int resCode = -1;
         String total = null;
-        if(!isConnected()){
+        if(context!=null && !isConnected()){
             throw new IOException("Not Connected");
         }
 
@@ -325,6 +343,10 @@ public class InternetConnection implements Handler.Callback{
         return total;
     }
 
+    public void setMaxAttempt(int maxAttempt) {
+        this.maxAttempt = maxAttempt;
+    }
+
     private String getReponse(HttpURLConnection http) throws IOException{
         InputStream in = http.getInputStream();
         StringBuilder total = new StringBuilder();
@@ -381,12 +403,10 @@ public class InternetConnection implements Handler.Callback{
     public enum Type{
         TEXT,FILE
     }
-
     public void disconnect(){
         if(thread!=null) thread.interrupt();
         if(httpConn!=null)httpConn.disconnect();
     }
-
     private class MultiPartPost{
         private final String boundary;
         private final OutputStream outputStream;

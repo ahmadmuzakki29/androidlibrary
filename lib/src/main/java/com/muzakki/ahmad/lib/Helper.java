@@ -12,19 +12,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by jeki on 7/12/16.
  */
 public class Helper {
 
-    public static Bundle JSONtoBundle(JSONObject obj)throws JSONException{
+    public static Bundle jsonToBundle(JSONObject obj)throws JSONException{
         Iterator<String> iter = obj.keys();
         Bundle b = new Bundle();
         while(iter.hasNext()){
             String key = iter.next();
-            String val = obj.getString(key);
-            b.putString(key,val);
+            try{
+                JSONObject sub = obj.getJSONObject(key);
+                b.putBundle(key, jsonToBundle(sub));
+            }catch (JSONException e){
+                String val = obj.getString(key);
+                b.putString(key,val);
+            }
         }
         return b;
     }
@@ -79,6 +85,14 @@ public class Helper {
         editor.apply();
     }
 
+    public static void clearPref(Context ctx){
+        SharedPreferences sharedPref = ctx.getSharedPreferences(
+                Constant.PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     public static String getPrefString(Context ctx, String key){
         SharedPreferences sharedPref = ctx.getSharedPreferences(
                 Constant.PREF, Context.MODE_PRIVATE);
@@ -93,5 +107,27 @@ public class Helper {
 
     public static void sendLog(Context context, String message) {
         // do send log
+    }
+
+    public static Bundle mapToBundle(Map<String,String> map){
+        Bundle data = new Bundle();
+        for(String key: map.keySet()){
+            String val = map.get(key);
+            try {
+                JSONObject obj = new JSONObject(val);
+                data.putBundle(key, jsonToBundle(obj));
+            } catch (JSONException e) {
+                data.putString(key,val);
+            }
+        }
+        return data;
+    }
+
+    public static String getIID(Context ctx) {
+        return getPrefString(ctx,"IID");
+    }
+
+    public static void setIID(Context ctx,String IID){
+        setPref(ctx,"IID",IID);
     }
 }
